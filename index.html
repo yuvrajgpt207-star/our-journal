@@ -11,10 +11,11 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
 </head>
-<body class="bg-orange-100 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-rose-500 selection:text-white">
+<body class="
+bg-stone-600 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-rose-500 selection:text-white">
 
     <!-- Top Header -->
-    <header class="border-b border-slate-800/80 bg-emerald-300/60 backdrop-blur-md sticky top-0 z-50 px-4 py-3">
+    <header class="border-b border-slate-800/80 bg-black/60 backdrop-blur-md sticky top-0 z-50 px-4 py-3">
         <div class="max-w-2xl mx-auto flex items-center justify-between">
             <div class="flex items-center space-x-2">
                 <span class="text-xl">📖</span>
@@ -35,19 +36,23 @@
             <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-rose-600/10 rounded-full blur-2xl pointer-events-none"></div>
             <p class="text-xs font-semibold uppercase tracking-wider text-rose-400 mb-1">Time until ready to share</p>
             <div id="countdown-timer" class="grid grid-cols-4 gap-2 text-center my-3">
-                <div class="bg-orange-100/60 border border-slate-800/80 rounded-xl p-2">
+                <div class="
+bg-stone-600/60 border border-slate-800/80 rounded-xl p-2">
                     <span id="cd-days" class="text-lg sm:text-2xl font-bold text-white block">--</span>
                     <span class="text-[10px] text-slate-400 uppercase">Days</span>
                 </div>
-                <div class="bg-orange-100/60 border border-slate-800/80 rounded-xl p-2">
+                <div class="
+bg-stone-600/60 border border-slate-800/80 rounded-xl p-2">
                     <span id="cd-hours" class="text-lg sm:text-2xl font-bold text-white block">--</span>
                     <span class="text-[10px] text-slate-400 uppercase">Hours</span>
                 </div>
-                <div class="bg-orange-100/60 border border-slate-800/80 rounded-xl p-2">
+                <div class="
+bg-stone-600/60 border border-slate-800/80 rounded-xl p-2">
                     <span id="cd-mins" class="text-lg sm:text-2xl font-bold text-white block">--</span>
                     <span class="text-[10px] text-slate-400 uppercase">Mins</span>
                 </div>
-                <div class="bg-orange-100/60 border border-slate-800/80 rounded-xl p-2">
+                <div class="
+bg-stone-600/60 border border-slate-800/80 rounded-xl p-2">
                     <span id="cd-secs" class="text-lg sm:text-2xl font-bold text-white block">--</span>
                     <span class="text-[10px] text-slate-400 uppercase">Secs</span>
                 </div>
@@ -56,17 +61,19 @@
 
         <!-- WRITER VIEW -->
         <div id="view-writer" class="space-y-6">
-            <div class="bg-emerald-300 border border-slate-800/80 rounded-2xl p-4 sm:p-6 shadow-xl">
+            <div class="bg-black border border-slate-800/80 rounded-2xl p-4 sm:p-6 shadow-xl">
                 <h2 class="text-sm font-semibold text-slate-300 mb-3 flex items-center space-x-2">
                     <span>✍️</span><span>Write a New Entry</span>
                 </h2>
                 <form id="entry-form" onsubmit="saveEntryToCloud(event)" class="space-y-4">
                     <div>
                         <input type="text" id="entry-title" placeholder="Entry Title..." required 
-                            class="w-full bg-orange-100 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-rose-500">
+                            class="w-full 
+bg-stone-600 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-rose-500">
                     </div>
                     <div>
-                        <select id="entry-mood" class="w-full bg-orange-100 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-300 focus:outline-none focus:border-rose-500">
+                        <select id="entry-mood" class="w-full 
+bg-stone-600 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-300 focus:outline-none focus:border-rose-500">
                             <option value="💭 Thoughtful">💭 Thoughtful</option>
                             <option value="🥀 Missing You">🥀 Missing You</option>
                             <option value="💡 Hopeful">💡 Hopeful</option>
@@ -76,11 +83,13 @@
                     </div>
                     <div>
                         <textarea id="entry-body" rows="4" placeholder="Write your thoughts..." required 
-                            class="w-full bg-orange-100 border border-slate-800 rounded-xl p-4 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-rose-500 resize-none"></textarea>
+                            class="w-full 
+bg-stone-600 border border-slate-800 rounded-xl p-4 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-rose-500 resize-none"></textarea>
                     </div>
                     <div class="flex items-center justify-between pt-2">
                         <input type="url" id="entry-image-url" placeholder="Paste direct image link (optional)" 
-                            class="w-full bg-orange-100 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-rose-500 mr-2">
+                            class="w-full 
+bg-stone-600 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-rose-500 mr-2">
                         <button type="submit" id="save-btn" class="bg-rose-600 hover:bg-rose-500 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-rose-900/30 whitespace-nowrap">
                             Save Entry
                         </button>
@@ -112,7 +121,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-slate-800/80 bg-emerald-300/40 py-4 text-center text-xs text-slate-500">
+    <footer class="border-t border-slate-800/80 bg-black/40 py-4 text-center text-xs text-slate-500">
         <p>Built with care for a fresh start.</p>
     </footer>
 
@@ -190,12 +199,12 @@
             document.getElementById('entry-count').innerText = data.length;
 
             if (data.length === 0) {
-                container.innerHTML = `<div class="text-center py-8 text-slate-500 text-xs bg-emerald-300/40 border border-dashed border-slate-800 rounded-xl">No entries written yet. Jot down your first thought above.</div>`;
+                container.innerHTML = `<div class="text-center py-8 text-slate-500 text-xs bg-black/40 border border-dashed border-slate-800 rounded-xl">No entries written yet. Jot down your first thought above.</div>`;
                 return;
             }
 
             container.innerHTML = data.map(item => `
-                <div class="bg-emerald-300 border border-slate-800/80 rounded-2xl p-4 sm:p-5 shadow-sm space-y-3">
+                <div class="bg-black border border-slate-800/80 rounded-2xl p-4 sm:p-5 shadow-sm space-y-3">
                     <div class="flex items-center justify-between text-xs">
                         <span class="text-rose-400 font-medium">${item.mood}</span>
                         <div class="flex items-center space-x-3">
@@ -219,7 +228,7 @@
             }
 
             container.innerHTML = data.map(item => `
-                <div class="bg-emerald-300 border border-slate-800/80 rounded-2xl p-5 sm:p-6 shadow-md space-y-3">
+                <div class="bg-black border border-slate-800/80 rounded-2xl p-5 sm:p-6 shadow-md space-y-3">
                     <div class="flex items-center justify-between text-xs">
                         <span class="text-rose-400 font-medium">${item.mood}</span>
                         <span class="text-slate-500">${item.date}</span>
