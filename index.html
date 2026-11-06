@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Time Diary</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-rose-500 selection:text-white">
+
+    <!-- Top Header -->
+    <header class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-50 px-4 py-3">
+        <div class="max-w-2xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <span class="text-xl">📖</span>
+                <h1 class="font-bold text-base sm:text-lg tracking-tight text-slate-200">Our Time Diary</h1>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="switchView('writer')" id="nav-writer" class="text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg bg-rose-600 text-white transition-all shadow-sm shadow-rose-900/40">My Journal</button>
+                <button onclick="switchView('reader')" id="nav-reader" class="text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all">Reader View 💌</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-2xl w-full mx-auto p-4 sm:p-6 flex-grow mb-12">
+
+        <!-- Countdown Banner -->
+        <div class="mb-6 bg-gradient-to-br from-rose-950/40 via-slate-900 to-slate-900 border border-rose-900/30 rounded-2xl p-4 sm:p-5 shadow-lg relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-rose-600/10 rounded-full blur-2xl pointer-events-none"></div>
+            <p class="text-xs font-semibold uppercase tracking-wider text-rose-400 mb-1">Time until ready to share</p>
+            <div id="countdown-timer" class="grid grid-cols-4 gap-2 text-center my-3">
+                <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-2">
+                    <span id="cd-days" class="text-lg sm:text-2xl font-bold text-white block">--</span>
+                    <span class="text-[10px] text-slate-400 uppercase">Days</span>
+                </div>
+                <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-2">
+                    <span id="cd-hours" class="text-lg sm:text-2xl font-bold text-white block">--</span>
+                    <span class="text-[10px] text-slate-400 uppercase">Hours</span>
+                </div>
+                <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-2">
+                    <span id="cd-mins" class="text-lg sm:text-2xl font-bold text-white block">--</span>
+                    <span class="text-[10px] text-slate-400 uppercase">Mins</span>
+                </div>
+                <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-2">
+                    <span id="cd-secs" class="text-lg sm:text-2xl font-bold text-white block">--</span>
+                    <span class="text-[10px] text-slate-400 uppercase">Secs</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- WRITER VIEW -->
+        <div id="view-writer" class="space-y-6">
+            <div class="bg-slate-900 border border-slate-800/80 rounded-2xl p-4 sm:p-6 shadow-xl">
+                <h2 class="text-sm font-semibold text-slate-300 mb-3 flex items-center space-x-2">
+                    <span>✍️</span><span>Write a New Entry</span>
+                </h2>
+                <form id="entry-form" onsubmit="saveEntryToCloud(event)" class="space-y-4">
+                    <div>
+                        <input type="text" id="entry-title" placeholder="Entry Title..." required 
+                            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-rose-500">
+                    </div>
+                    <div>
+                        <select id="entry-mood" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-300 focus:outline-none focus:border-rose-500">
+                            <option value="💭 Thoughtful">💭 Thoughtful</option>
+                            <option value="🥀 Missing You">🥀 Missing You</option>
+                            <option value="💡 Hopeful">💡 Hopeful</option>
+                            <option value="🙏 Apologetic">🙏 Apologetic</option>
+                            <option value="✨ Reminiscing">✨ Reminiscing</option>
+                        </select>
+                    </div>
+                    <div>
+                        <textarea id="entry-body" rows="4" placeholder="Write your thoughts..." required 
+                            class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-rose-500 resize-none"></textarea>
+                    </div>
+                    <div class="flex items-center justify-between pt-2">
+                        <input type="url" id="entry-image-url" placeholder="Paste direct image link (optional)" 
+                            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-rose-500 mr-2">
+                        <button type="submit" id="save-btn" class="bg-rose-600 hover:bg-rose-500 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-rose-900/30 whitespace-nowrap">
+                            Save Entry
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Entries List -->
+            <div>
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3 px-1">Your Cloud Timeline (<span id="entry-count">0</span>)</h3>
+                <div id="entries-container" class="space-y-4">
+                    <div class="text-center py-8 text-slate-500 text-xs">Loading entries from cloud...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- READER VIEW (For Her) -->
+        <div id="view-reader" class="hidden space-y-6">
+            <div class="bg-gradient-to-b from-rose-950/20 to-slate-900 border border-rose-900/20 rounded-2xl p-6 text-center">
+                <span class="text-3xl block mb-2">💌</span>
+                <h2 class="text-lg font-bold text-slate-100">Written with honest feelings</h2>
+                <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">Everything recorded here updates live in real-time.</p>
+            </div>
+            <div id="reader-entries-container" class="space-y-6">
+                <div class="text-center py-8 text-slate-500 text-xs">Loading shared entries...</div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 bg-slate-900/40 py-4 text-center text-xs text-slate-500">
+        <p>Built with care for a fresh start.</p>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, query, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDzXXmfvbdmi6gL2H66mdN5LQwXIhpLJms",
+            authDomain: "our-time-diary.firebaseapp.com",
+            projectId: "our-time-diary",
+            storageBucket: "our-time-diary.firebasestorage.app",
+            messagingSenderId: "373797915511",
+            appId: "1:373797915511:web:ee9deef3f7b6faaaddaf72"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let cachedEntries = [];
+
+        // Real-time listener to sync entries automatically from Cloud Firestore
+        const q = query(collection(db, "diary_entries"));
+        onSnapshot(q, (snapshot) => {
+            cachedEntries = [];
+            snapshot.forEach((docSnap) => {
+                cachedEntries.push({ id: docSnap.id, ...docSnap.data() });
+            });
+            cachedEntries.sort((a, b) => b.rawTime - a.rawTime);
+            renderEntries(cachedEntries);
+            renderReaderView(cachedEntries);
+        });
+
+        // Save Entry to Firebase Cloud
+        window.saveEntryToCloud = async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('save-btn');
+            btn.innerText = "Saving...";
+            btn.disabled = true;
+
+            const title = document.getElementById('entry-title').value;
+            const mood = document.getElementById('entry-mood').value;
+            const body = document.getElementById('entry-body').value;
+            const imageUrl = document.getElementById('entry-image-url').value;
+
+            try {
+                await addDoc(collection(db, "diary_entries"), {
+                    title,
+                    mood,
+                    body,
+                    imageUrl,
+                    date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+                    rawTime: Date.now()
+                });
+                document.getElementById('entry-form').reset();
+            } catch (err) {
+                alert("Error saving entry: " + err.message);
+            } finally {
+                btn.innerText = "Save Entry";
+                btn.disabled = false;
+            }
+        };
+
+        // Delete Entry from Cloud
+        window.deleteCloudEntry = async function(id) {
+            if (confirm("Delete this entry?")) {
+                await deleteDoc(doc(db, "diary_entries", id));
+            }
+        };
+
+        // Render Writer View
+        function renderEntries(data) {
+            const container = document.getElementById('entries-container');
+            document.getElementById('entry-count').innerText = data.length;
+
+            if (data.length === 0) {
+                container.innerHTML = `<div class="text-center py-8 text-slate-500 text-xs bg-slate-900/40 border border-dashed border-slate-800 rounded-xl">No entries written yet. Jot down your first thought above.</div>`;
+                return;
+            }
+
+            container.innerHTML = data.map(item => `
+                <div class="bg-slate-900 border border-slate-800/80 rounded-2xl p-4 sm:p-5 shadow-sm space-y-3">
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="text-rose-400 font-medium">${item.mood}</span>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-slate-500">${item.date}</span>
+                            <button onclick="deleteCloudEntry('${item.id}')" class="text-slate-500 hover:text-rose-400 transition-colors">🗑️</button>
+                        </div>
+                    </div>
+                    <h4 class="font-semibold text-slate-200 text-sm sm:text-base">${escapeHTML(item.title)}</h4>
+                    <p class="text-slate-300 text-xs sm:text-sm whitespace-pre-wrap leading-relaxed">${escapeHTML(item.body)}</p>
+                    ${item.imageUrl ? `<img src="${escapeHTML(item.imageUrl)}" class="rounded-xl max-h-60 w-full object-cover mt-2 border border-slate-800">` : ''}
+                </div>
+            `).join('');
+        }
+
+        // Render Reader View
+        function renderReaderView(data) {
+            const container = document.getElementById('reader-entries-container');
+            if (data.length === 0) {
+                container.innerHTML = `<div class="text-center py-8 text-slate-500 text-sm">Nothing published here yet.</div>`;
+                return;
+            }
+
+            container.innerHTML = data.map(item => `
+                <div class="bg-slate-900 border border-slate-800/80 rounded-2xl p-5 sm:p-6 shadow-md space-y-3">
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="text-rose-400 font-medium">${item.mood}</span>
+                        <span class="text-slate-500">${item.date}</span>
+                    </div>
+                    <h3 class="font-bold text-slate-100 text-base sm:text-lg">${escapeHTML(item.title)}</h3>
+                    <p class="text-slate-300 text-sm whitespace-pre-wrap leading-relaxed">${escapeHTML(item.body)}</p>
+                    ${item.imageUrl ? `<img src="${escapeHTML(item.imageUrl)}" class="rounded-xl max-h-72 w-full object-cover mt-3 border border-slate-800">` : ''}
+                </div>
+            `).join('');
+        }
+
+        function escapeHTML(str) {
+            return str ? str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)) : '';
+        }
+    </script>
+    <script>
+        // Tab switcher logic
+        function switchView(view) {
+            const writerView = document.getElementById('view-writer');
+            const readerView = document.getElementById('view-reader');
+            const navWriter = document.getElementById('nav-writer');
+            const navReader = document.getElementById('nav-reader');
+
+            if (view === 'writer') {
+                writerView.classList.remove('hidden');
+                readerView.classList.add('hidden');
+                navWriter.className = "text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg bg-rose-600 text-white transition-all shadow-sm shadow-rose-900/40";
+                navReader.className = "text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all";
+            } else {
+                writerView.classList.add('hidden');
+                readerView.classList.remove('hidden');
+                navReader.className = "text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg bg-rose-600 text-white transition-all shadow-sm shadow-rose-900/40";
+                navWriter.className = "text-xs sm:text-sm font-medium px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all";
+            }
+        }
+
+        // Countdown Timer Logic (30 days from now)
+        const targetTime = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).getTime();
+        setInterval(() => {
+            const diff = targetTime - new Date().getTime();
+            if (diff > 0) {
+                document.getElementById('cd-days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+                document.getElementById('cd-hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+                document.getElementById('cd-mins').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                document.getElementById('cd-secs').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
